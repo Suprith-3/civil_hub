@@ -29,4 +29,4 @@ services:
         fromService:
           type: web
           name: civil-hub-backend
-          property: host
+          property: url
