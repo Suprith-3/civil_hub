@@ -30,3 +30,7 @@ services:
           type: web
           name: civil-hub-backend
           property: url
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
