@@ -189,34 +189,63 @@ const AdminDashboard = () => {
               {activeTab === 'approvals' && (
                 <div style={gridStyle}>
                   {pendingUsers.length === 0 ? <EmptyState msg="No pending approvals." /> : (
-                    pendingUsers.map(user => (
-                      <div key={user.id} style={cardStyle}>
-                        <div style={cardHeaderStyle}>
-                          <div style={roleBadgeStyle(user.role)}>{user.role}</div>
-                          <span style={{ fontWeight: '700' }}>{user.name}</span>
-                        </div>
-                        <div style={cardBodyStyle}>
-                          <div style={infoRowStyle}><FiFileText /> {user.email}</div>
-                          <h4 style={sectionTitleStyle}>Documents</h4>
-                          <div style={docGridStyle}>
-                            {user.role === 'engineer' && user.engineers?.[0] && (
-                              <><DocLink label="Degree" url={user.engineers[0].degree_cert_url} />
-                                <DocLink label="DL" url={user.engineers[0].dl_url} />
-                                <DocLink label="Level" url={user.engineers[0].level_cert_url} /></>
-                            )}
-                            {user.role === 'shop' && user.shopkeepers?.[0] && (
-                              <><DocLink label="Photo" url={user.shopkeepers[0].shop_photo_url} isImage />
-                                <DocLink label="Doc" url={user.shopkeepers[0].document_url} />
-                                <div style={gstTagStyle}>GST: {user.shopkeepers[0].gst_number}</div></>
-                            )}
+                    pendingUsers.map(user => {
+                      // Support both singular and plural nested object keys from Supabase
+                      const engData = user.engineers?.[0] || user.engineer;
+                      const shopData = user.shopkeepers?.[0] || user.shopkeeper;
+                      
+                      return (
+                        <div key={user.id} style={cardStyle}>
+                          <div style={cardHeaderStyle}>
+                            <div style={roleBadgeStyle(user.role)}>{user.role}</div>
+                            <span style={{ fontWeight: '700' }}>{user.name}</span>
+                          </div>
+                          <div style={cardBodyStyle}>
+                            <div style={infoRowStyle}><FiFileText /> {user.email}</div>
+                            <h4 style={sectionTitleStyle}>Verification Documents</h4>
+                            
+                            <div style={docGridStyle}>
+                              {user.role === 'engineer' ? (
+                                engData ? (
+                                  <>
+                                    <DocLink label="Degree Certificate" url={engData.degree_cert_url} />
+                                    <DocLink label="Driver's License" url={engData.dl_url} />
+                                    <DocLink label="Level Cert" url={engData.level_cert_url} />
+                                    <div style={{ marginTop: '10px', fontSize: '12px', color: '#4E5BE4' }}>
+                                      <strong>Company:</strong> {engData.company_name || 'Individual'}
+                                    </div>
+                                  </>
+                                ) : <div style={nullDocStyle}>No data found in engineers table.</div>
+                              ) : null}
+
+                              {user.role === 'shop' ? (
+                                shopData ? (
+                                  <>
+                                    <div style={{ marginBottom: '10px', width: '100%' }}>
+                                      <p style={{ margin: '0 0 5px 0', fontSize: '11px', fontWeight: 'bold' }}>Shop Photo Preview:</p>
+                                      {shopData.shop_photo_url ? (
+                                        <img src={shopData.shop_photo_url} alt="Shop" style={{ width: '100%', height: '100px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #EEE' }} />
+                                      ) : <div style={nullDocStyle}>No photo uploaded</div>}
+                                    </div>
+                                    <DocLink label="Business License" url={shopData.document_url} />
+                                    <div style={gstTagStyle}>GST: {shopData.gst_number || 'Not Provided'}</div>
+                                    <div style={{ marginTop: '5px', fontSize: '12px', color: '#D33AFB' }}>
+                                      <strong>Shop Name:</strong> {shopData.shop_name}
+                                    </div>
+                                  </>
+                                ) : <div style={nullDocStyle}>No data found in shopkeepers table.</div>
+                              ) : null}
+
+                              {user.role === 'worker' && <div style={nullDocStyle}>Worker role is auto-approved or has no documents.</div>}
+                            </div>
+                          </div>
+                          <div style={cardActionsStyle}>
+                            <button style={approveButtonStyle} onClick={() => handleApproval(user.id, 'approve')}>Approve</button>
+                            <button style={rejectButtonStyle} onClick={() => handleApproval(user.id, 'reject')}>Reject</button>
                           </div>
                         </div>
-                        <div style={cardActionsStyle}>
-                          <button style={approveButtonStyle} onClick={() => handleApproval(user.id, 'approve')}>Approve</button>
-                          <button style={rejectButtonStyle} onClick={() => handleApproval(user.id, 'reject')}>Reject</button>
-                        </div>
-                      </div>
-                    ))
+                      );
+                    })
                   )}
                 </div>
               )}
