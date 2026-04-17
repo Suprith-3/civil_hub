@@ -9,13 +9,18 @@ import WorkerDashboard from './pages/WorkerDashboard';
 import Shop from './pages/Shop';
 import Schemes from './pages/Schemes';
 import AdminDashboard from './pages/AdminDashboard';
-// Import other dashboards as we build them
+import LandingPage from './pages/LandingPage';
+import LanguageSwitcher from './components/LanguageSwitcher';
 
 function App() {
   return (
     <Router>
+      <LanguageSwitcher />
       <Routes>
-        {/* Public Route */}
+        {/* Public Landing Page */}
+        <Route path="/" element={<LandingPage />} />
+        
+        {/* Public Auth Route */}
         <Route path="/login" element={<AnimatedLoginPage />} />
 
         {/* Protected Dashboard Routes */}
@@ -34,11 +39,8 @@ function App() {
         <Route path="/shop" element={<Shop />} />
         <Route path="/schemes" element={<Schemes />} />
 
-        {/* Redirect empty path to login */}
-        <Route path="/" element={<Navigate to="/login" />} />
-
-        {/* Catch-all redirect */}
-        <Route path="*" element={<Navigate to="/login" />} />
+        {/* Catch-all redirect to Landing */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );

@@ -1,9 +1,10 @@
-/* src/pages/UserDashboard.jsx */
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Navbar } from '../components/ANIMATED_COMPONENTS';
+import { useTranslation } from 'react-i18next';
 
 const UserDashboard = () => {
+    const { t } = useTranslation();
     const user = JSON.parse(localStorage.getItem('user'));
 
     return (
@@ -19,9 +20,9 @@ const UserDashboard = () => {
                     animate={{ opacity: 1, y: 0 }}
                 >
                     <h1 style={{ fontSize: '32px', color: '#1A1A1A' }}>
-                        Welcome back, {user?.name || 'User'}! 👋
+                        {t('welcome_back')}, {user?.name || t('user')}! 👋
                     </h1>
-                    <p style={{ color: '#666' }}>Here is what's happening in your construction project.</p>
+                    <p style={{ color: '#666' }}>{t('dashboard_desc')}</p>
                 </motion.div>
 
                 {/* Dashboard Grid placeholder */}

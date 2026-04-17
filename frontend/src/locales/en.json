@@ -1,5 +1,7 @@
 {
   "welcome": "Welcome",
+  "welcome_back": "Welcome back",
+  "dashboard_desc": "Here is what's happening in your construction project.",
   "login": "Login",
   "register": "Register",
   "shop": "Shop",
@@ -7,5 +9,8 @@
   "workers": "Workers",
   "schemes": "Government Schemes",
   "addToCart": "Add to Cart",
-  "placeOrder": "Place Order"
+  "placeOrder": "Place Order",
+  "logout": "Logout",
+  "profile": "Profile",
+  "settings": "Settings"
 }

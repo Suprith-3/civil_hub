@@ -23,13 +23,16 @@ const AnimatedLoginPage = () => {
     { id: 'shop', label: 'Shopkeeper', icon: '🏪' }
   ];
 
-  // Check for secret admin access via URL param: ?secret=admin
+  // Check for secret admin access via URL param: ?secret=admin or tab=register
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('secret') === 'admin') {
       setRole('admin');
       setActiveTab('login');
       setEmail('supreethm763@gmail.com'); // Autofill for convenience
+    }
+    if (params.get('tab') === 'register') {
+      setActiveTab('register');
     }
   }, []);
 

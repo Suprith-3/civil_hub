@@ -16,6 +16,7 @@ import {
   FiMapPin,
   FiShoppingCart
 } from 'react-icons/fi';
+import { useTranslation } from 'react-i18next';
 
 // =====================================================
 // 1. ANIMATED BUTTONS
@@ -360,6 +361,7 @@ export const NotificationToast = ({
 // =====================================================
 
 export const Navbar = ({ user, onLogout }) => {
+  const { t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(3);
 
@@ -396,12 +398,12 @@ export const Navbar = ({ user, onLogout }) => {
       {/* Desktop Menu */}
       <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
         {[
-          { name: 'Home', path: '/user-dashboard' },
-          { name: 'Shop', path: '/shop' },
-          { name: 'Schemes', path: '/schemes' }
+          { name: t('welcome'), path: '/user-dashboard' },
+          { name: t('shop'), path: '/shop' },
+          { name: t('schemes'), path: '/schemes' }
         ].map((item, i) => (
           <motion.div
-            key={item.name}
+            key={i}
             whileHover={{ y: -2 }}
           >
             <Link
@@ -420,31 +422,9 @@ export const Navbar = ({ user, onLogout }) => {
         ))}
       </div>
 
-      {/* Right Side (Language + Notifications + User) */}
+      {/* Right Side (Notifications + User) */}
       <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
         
-        {/* Language Selector */}
-        <select 
-          onChange={(e) => {
-            localStorage.setItem('language', e.target.value);
-            window.location.reload();
-          }}
-          defaultValue={localStorage.getItem('language') || 'en'}
-          style={{
-            padding: '6px 12px',
-            borderRadius: '6px',
-            border: '1px solid #DDD',
-            backgroundColor: 'white',
-            cursor: 'pointer',
-            outline: 'none',
-            fontSize: '14px'
-          }}
-        >
-          <option value="en">English</option>
-          <option value="hi">हिंदी (Hindi)</option>
-          <option value="kn">ಕನ್ನಡ (Kannada)</option>
-        </select>
-
         {/* Notification Bell */}
         <motion.div
           style={{ position: 'relative', cursor: 'pointer' }}
@@ -491,7 +471,7 @@ export const Navbar = ({ user, onLogout }) => {
           }}
           onClick={onLogout}
         >
-          Logout
+          {t('logout')}
         </motion.button>
       </div>
 
