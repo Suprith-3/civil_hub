@@ -5,6 +5,7 @@ import {
   FiCheck, FiX, FiFileText, FiImage, FiUser, FiInfo, 
   FiTrash2, FiShoppingBag, FiLayers, FiAlertTriangle 
 } from 'react-icons/fi';
+import API_BASE_URL from '../apiConfig';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('approvals');
@@ -41,7 +42,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/schemes', newScheme, {
+      await axios.post(`${API_BASE_URL}/api/schemes`, newScheme, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setShowAddScheme(false);
@@ -59,16 +60,16 @@ const AdminDashboard = () => {
       const headers = { Authorization: `Bearer ${token}` };
 
       if (activeTab === 'approvals') {
-        const res = await axios.get('http://localhost:5000/api/auth/admin/pending', { headers });
+        const res = await axios.get(`${API_BASE_URL}/api/auth/admin/pending`, { headers });
         setPendingUsers(res.data);
       } else if (activeTab === 'users') {
-        const res = await axios.get('http://localhost:5000/api/auth/admin/users', { headers });
+        const res = await axios.get(`${API_BASE_URL}/api/auth/admin/users`, { headers });
         setAllUsers(res.data);
       } else if (activeTab === 'products') {
-        const res = await axios.get('http://localhost:5000/api/shop/products');
+        const res = await axios.get(`${API_BASE_URL}/api/shop/products`);
         setProducts(res.data.products);
       } else if (activeTab === 'schemes') {
-        const res = await axios.get('http://localhost:5000/api/schemes');
+        const res = await axios.get(`${API_BASE_URL}/api/schemes`);
         setSchemes(res.data.schemes);
       }
     } catch (err) {
@@ -84,7 +85,7 @@ const AdminDashboard = () => {
       setProcessingId(userId);
       const token = localStorage.getItem('token');
       const endpoint = action === 'approve' ? '/approve' : '/reject';
-      await axios.post(`http://localhost:5000/api/auth/admin${endpoint}`, 
+      await axios.post(`${API_BASE_URL}/api/auth/admin${endpoint}`, 
         { user_id: userId, reason },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -101,7 +102,7 @@ const AdminDashboard = () => {
     try {
       setProcessingId(userId);
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/auth/admin/user/${userId}`, {
+      await axios.delete(`${API_BASE_URL}/api/auth/admin/user/${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAllUsers(allUsers.filter(u => u.id !== userId));
@@ -117,7 +118,7 @@ const AdminDashboard = () => {
     try {
       setProcessingId(productId);
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/shop/admin/product/${productId}`, {
+      await axios.delete(`${API_BASE_URL}/api/shop/admin/product/${productId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProducts(products.filter(p => p.id !== productId));
@@ -133,7 +134,7 @@ const AdminDashboard = () => {
     try {
       setProcessingId(schemeId);
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/schemes/admin/scheme/${schemeId}`, {
+      await axios.delete(`${API_BASE_URL}/api/schemes/admin/scheme/${schemeId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSchemes(schemes.filter(s => s.id !== schemeId));

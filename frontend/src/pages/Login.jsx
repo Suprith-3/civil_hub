@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiMail, FiLock, FiEye, FiEyeOff, FiAlertCircle, FiCheckCircle } from 'react-icons/fi';
 import axios from 'axios';
+import API_BASE_URL from '../apiConfig';
 
 const AnimatedLoginPage = () => {
   const [role, setRole] = useState(''); // Empty by default
