@@ -37,7 +37,7 @@ const AnimatedLoginPage = () => {
   const [companyName, setCompanyName] = useState('');
   const [shopName, setShopName] = useState('');
   const [gstNumber, setGstNumber] = useState('');
-  
+
   // File states
   const [degreeCert, setDegreeCert] = useState(null);
   const [dlCert, setDlCert] = useState(null);
@@ -53,7 +53,7 @@ const AnimatedLoginPage = () => {
 
     const isLogin = activeTab === 'login';
     const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-    
+
     let payload;
     let headers = {};
 
@@ -79,14 +79,14 @@ const AnimatedLoginPage = () => {
         if (shopPhoto) formData.append('shop_photo', shopPhoto);
         if (shopDoc) formData.append('shop_document', shopDoc);
       }
-      
+
       payload = formData;
       headers = { 'Content-Type': 'multipart/form-data' };
     }
 
     try {
       const res = await axios.post(`http://localhost:5000${endpoint}`, payload, { headers });
-      
+
       if (res.data.status === 'pending') {
         setSuccess('Registration successful! Waiting for admin approval.');
         return;
@@ -95,7 +95,7 @@ const AnimatedLoginPage = () => {
       setSuccess(`${isLogin ? 'Login' : 'Registration'} successful!`);
       localStorage.setItem('token', res.data.access_token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
-      
+
       setTimeout(() => {
         if (role === 'admin') {
           window.location.href = '/admin-dashboard';
@@ -140,7 +140,7 @@ const AnimatedLoginPage = () => {
           flexDirection: 'column',
           justifyContent: 'center'
         }}>
-          <h1 
+          <h1
             onDoubleClick={() => {
               setRole('admin');
               setActiveTab('login');
@@ -218,12 +218,12 @@ const AnimatedLoginPage = () => {
 
               <form onSubmit={handleAuth}>
                 {error && <div style={{ padding: '10px', background: '#FFE8E8', color: '#D62828', borderRadius: '8px', marginBottom: '15px', fontSize: '13px' }}>{error}</div>}
-                
+
                 {activeTab === 'register' && (
                   <>
                     <input style={inputStyle} placeholder="Full Name" value={name} onChange={e => setName(e.target.value)} required />
                     <input style={inputStyle} placeholder="Phone Number" value={phone} onChange={e => setPhone(e.target.value)} required />
-                    
+
                     {role === 'engineer' && (
                       <>
                         <input style={inputStyle} placeholder="Company Name" value={companyName} onChange={e => setCompanyName(e.target.value)} required />
@@ -248,7 +248,7 @@ const AnimatedLoginPage = () => {
                     )}
                   </>
                 )}
-                
+
                 <input style={inputStyle} type="email" placeholder="Email Address" value={email} onChange={e => setEmail(e.target.value)} required />
                 <div style={{ position: 'relative' }}>
                   <input style={inputStyle} type={showPassword ? 'text' : 'password'} placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
